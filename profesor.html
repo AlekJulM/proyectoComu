@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Profesor - Verso a Verso Quiz</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .panel-profesor {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .crear-sesion {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        
+        .enlace-sesion {
+            margin-top: 20px;
+        }
+        
+        .enlace-sesion input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+        }
+        
+        th, td {
+            border: 1px solid #eee;
+            padding: 10px;
+            text-align: left;
+        }
+        
+        th {
+            background: #f5f5f5;
+        }
+        
+        .qr-code {
+            display: block;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="panel-profesor">
+        <h1>Panel del Profesor</h1>
+        
+        <div class="crear-sesion">
+            <h2>Crear nueva sesión</h2>
+            <p>Crea una nueva sesión para que los estudiantes participen en tiempo real</p>
+            <button id="btnCrearSesion" class="boton-principal">Crear sesión</button>
+            <div id="enlaceSesion" class="enlace-sesion"></div>
+        </div>
+        
+        <div class="ranking-tiempo-real">
+            <h2>Resultados en tiempo real</h2>
+            <div id="resultados">
+                <p>Crea una sesión para ver los resultados</p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script>
+        // Configuración de Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyDfWrAAPDSf_j1Epgs6tCvhq3NAB2ScUS4",
+            authDomain: "proyecto-comunicacion-6aa68.firebaseapp.com",
+            databaseURL: "https://proyecto-comunicacion-6aa68-default-rtdb.firebaseio.com",
+            projectId: "proyecto-comunicacion-6aa68",
+            storageBucket: "proyecto-comunicacion-6aa68.firebasestorage.app",
+            messagingSenderId: "405528643527",
+            appId: "1:405528643527:web:16262f88915ba6eec6fbe2"
+        };
+        
+        // Inicializar Firebase
+        firebase.initializeApp(firebaseConfig);
+        
+        document.getElementById('btnCrearSesion').addEventListener('click', () => {
+            const sesionId = 'clase-' + Date.now();
+            const baseUrl = window.location.href.replace('profesor.html', '');
+            const url = `${baseUrl}index.html?sesion=${sesionId}`;
+            
+            document.getElementById('enlaceSesion').innerHTML = `
+                <p>Comparte este enlace con tus estudiantes:</p>
+                <input type="text" value="${url}" readonly onclick="this.select()">
+                <p>O escanea este código QR:</p>
+                <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(url)}">
+            `;
+            
+            // Mostrar resultados en tiempo real
+            firebase.database().ref('ranking').child(sesionId).on('value', snapshot => {
+                const resultadosDiv = document.getElementById('resultados');
+                
+                if (snapshot.exists()) {
+                    const data = Object.values(snapshot.val() || {});
+                    data.sort((a, b) => b.puntuacion - a.puntuacion);
+                    
+                    resultadosDiv.innerHTML = `
+                        <table>
+                            <tr>
+                                <th>Posición</th>
+                                <th>Nombre</th>
+                                <th>Puntuación</th>
+                                <th>Hora</th>
+                            </tr>
+                            ${data.map((item, index) => `
+                                <tr>
+                                    <td>${index + 1}</td>
+                                    <td>${item.nombre}</td>
+                                    <td>${item.puntuacion}</td>
+                                    <td>${new Date(item.timestamp).toLocaleTimeString()}</td>
+                                </tr>
+                            `).join('')}
+                        </table>
+                    `;
+                } else {
+                    resultadosDiv.innerHTML = '<p>Esperando a que los estudiantes completen el quiz...</p>';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

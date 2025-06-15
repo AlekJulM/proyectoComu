@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verso a Verso: La Bella y la Bestia Quiz</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Pantalla 1: Portada -->
+    <section id="pantalla1" class="pantalla">
+        <div class="contenedor-portada">
+            <h1 class="titulo-principal">Verso a Verso: La Bella y la Bestia Quiz</h1>
+            <h2 class="subtitulo">«Descifra cada línea y conquista la puntuación perfecta»</h2>
+            <div class="creditos">
+                <p>Abigail Cristina Enciso Rios – Andrea Abigail Leiva Benito</p>
+                <p>Alexander Jamin Julon Mayta – Gian Marco Huaman Uscamayta</p>
+            </div>
+            <button id="btnEmpezar" class="boton-principal">Empezar juego</button>
+        </div>
+    </section>
+
+    <!-- Pantalla 2: Registro -->
+    <section id="pantalla2" class="pantalla oculto">
+        <div class="contenedor-registro">
+            <h2>Ingrese su nombre</h2>
+            <input type="text" id="inputNombre" maxlength="15" placeholder="Máximo 15 caracteres" 
+                pattern="[A-Za-z0-9]+" title="Solo letras y números permitidos">
+            <p id="errorNombre" class="error-mensaje oculto">Solo se permiten letras y números (máx. 15 caracteres)</p>
+            <button id="btnContinuar" class="boton-principal">Continuar</button>
+        </div>
+    </section>
+
+    <!-- Pantalla 3: Escucha -->
+    <section id="pantalla3" class="pantalla oculto">
+        <div class="contenedor-escucha">            <div class="portada-cancion">
+                <img src="assets/ab67616d0000b273c9689f393895847de98382e0.jpg" alt="Portada La Bella y La Bestia">
+            </div>
+            <div class="reproductor">
+                <audio id="audioCancion" src="assets/La Bella Y La Bestia.mp3" preload="auto"></audio>
+                <div class="controles-audio">
+                    <button id="btnPlayPause" class="boton-audio">
+                        <span id="iconoPlay">▶</span>
+                        <span id="iconoPause" class="oculto">⏸</span>
+                    </button>
+                    <div class="barra-progreso">
+                        <div id="progresoActual" class="progreso-actual"></div>
+                    </div>
+                    <span id="tiempoCorriente">0:00</span> / <span id="duracionTotal">0:00</span>
+                </div>
+            </div>
+            <div class="contenedor-letra">
+                <div id="letra" class="letra-cancion">
+                    <!-- La letra se cargará dinámicamente desde JS -->
+                </div>
+            </div>
+            <div class="botones-navegacion">
+                <button id="btnSaltarCancion" class="boton-secundario">Saltar canción</button>
+                <button id="btnPasarJuego" class="boton-principal oculto">Pasar al juego</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pantalla 4: Quiz -->    <section id="pantalla4" class="pantalla oculto">
+        <div class="contenedor-quiz">
+            <div class="info-quiz">
+                <div id="nombreJugador" class="nombre-jugador"></div>
+                <div id="temporizador" class="temporizador">150</div>
+                <div id="progresoQuiz" class="progreso-quiz">
+                    <span id="preguntaActual">1</span> / <span id="totalPreguntas">9</span>
+                </div>
+                <div id="tipoPregunta" class="tipo-pregunta"></div>
+            </div>
+            
+            <div class="tarjeta-pregunta">
+                <p id="textoPregunta" class="texto-pregunta"></p>
+                <div id="opcionesRespuesta" class="opciones-respuesta">
+                    <!-- Las opciones se cargarán dinámicamente -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pantalla 5: Resultados -->
+    <section id="pantalla5" class="pantalla oculto">
+        <div class="contenedor-resultados">
+            <h2>Resultados</h2>
+            <div id="scoreActual" class="score-actual"></div>
+            
+            <div class="tabla-ranking">
+                <h3>Ranking</h3>
+                <table id="tablaRanking">
+                    <thead>
+                        <tr>
+                            <th>Posición</th>
+                            <th>Nombre</th>
+                            <th>Puntuación</th>
+                        </tr>
+                    </thead>
+                    <tbody id="cuerpoTablaRanking">
+                        <!-- Se llenará dinámicamente -->
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="botones-final">
+                <button id="btnReiniciarJuego" class="boton-secundario">Reiniciar juego</button>
+                <button id="btnNuevoJugador" class="boton-principal">Nuevo jugador</button>
+                <button id="btnIntentarDeNuevo" class="boton-principal">Intentar de nuevo</button>
+            </div>
+    </div>
+    </section>
+
+    <!-- Scripts de Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+
+    <script>
+      // Configuración de Firebase
+      const firebaseConfig = {
+        apiKey: "AIzaSyDfWrAAPDSf_j1Epgs6tCvhq3NAB2ScUS4",
+        authDomain: "proyecto-comunicacion-6aa68.firebaseapp.com",
+        databaseURL: "https://proyecto-comunicacion-6aa68-default-rtdb.firebaseio.com",
+        projectId: "proyecto-comunicacion-6aa68",
+        storageBucket: "proyecto-comunicacion-6aa68.firebasestorage.app",
+        messagingSenderId: "405528643527",
+        appId: "1:405528643527:web:16262f88915ba6eec6fbe2"
+      };
+      
+      // Inicializar Firebase
+      firebase.initializeApp(firebaseConfig);
+    </script>
+
+    <script src="main.js"></script>
+</body>
+</html>
