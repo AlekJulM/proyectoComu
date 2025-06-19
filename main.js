@@ -900,8 +900,8 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
         
-        if (nombre.length > 15) {
-            errorNombre.textContent = 'El nombre no puede tener más de 15 caracteres.';
+        if (nombre.length > 25) {
+            errorNombre.textContent = 'El nombre no puede tener más de 25 caracteres.';
             errorNombre.classList.remove('oculto');
             return;
         }
