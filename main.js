@@ -906,7 +906,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
         }
         
-        if (!/^[A-Za-z0-9]+$/.test(nombre)) {
+        if (!/^[A-Za-z0-9 ]+$/.test(nombre)) {
             errorNombre.textContent = 'Solo se permiten letras y números.';
             errorNombre.classList.remove('oculto');
             return;
